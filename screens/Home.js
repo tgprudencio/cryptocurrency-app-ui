@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import { dummyData, COLORS, SIZES, FONTS ,icons, images } from '../constants';
+import { PriceAlert } from '../components'
 
 const Home = ({ navigation }) => {
 
@@ -36,7 +37,7 @@ const Home = ({ navigation }) => {
                     <View>
                         <Image 
                             source={item.image}
-                            resizeMode='contain'
+                            resizeMode='cover'
                             style={{
                                 marginTop: 5,
                                 width: 25,
@@ -44,11 +45,12 @@ const Home = ({ navigation }) => {
                             }}
                         />
                     </View>
+                    <View style={{ marginLeft: SIZES.base }}>
+                        <Text style={{ ...FONTS.h2 }}>{item.currency}</Text>
+                        <Text style={{ color: COLORS.gray, ...FONTS.body3 }}>{item.code}</Text>
+                    </View>
                 </View>
-                <View style={{ marginLeft: SIZES.base}}>
-                    <Text style={{ ...FONTS.h2 }}>{item.currency}</Text>
-                    <Text style={{ color: COLORS.gray, ...FONTS.body3 }}>{item.code}</Text>
-                </View>
+                
 
                 {/* Value */}
                 <View style={{ marginTop: SIZES.radius }}>
@@ -68,7 +70,7 @@ const Home = ({ navigation }) => {
             >
                 <ImageBackground
                     source={images.banner}
-                    resizeMode='contain'
+                    resizeMode='cover'
                     style={{
                         flex: 1,
                         alignItems: 'center'
@@ -116,10 +118,10 @@ const Home = ({ navigation }) => {
                     <View
                         style={{
                             position: 'absolute',
-                            bottom: '-30%',
+                            bottom: '-30%', // original = 20%
                         }}
                     >
-                        <Text style={{marginLeft: SIZES.padding, color: COLORS.white, ...FONTS.h2}}>Trending</Text>
+                        <Text style={{ marginLeft: SIZES.padding, color: COLORS.white, ...FONTS.h2 }}>Trending</Text>
                         <FlatList 
                             contentContainerStyle={{ marginTop: SIZES.base }}
                             data={trending}
@@ -127,7 +129,7 @@ const Home = ({ navigation }) => {
                             keyExtractor={item => `${item.id}`}
                             horizontal
                             showsHorizontalScrollIndicator={false}
-                            />
+                        />
                     </View>
 
                 </ImageBackground>
@@ -135,10 +137,45 @@ const Home = ({ navigation }) => {
         )
     }
 
+    function renderAlert() {
+        return (
+            <PriceAlert />
+        )
+    }
+
+    function renderNotice() {
+        return (
+            <View
+                style={{
+                    marginTop: SIZES.padding,
+                    marginHorizontal: SIZES.padding,
+                    padding: 20,
+                    borderRadius: SIZES.radius,
+                    backgroundColor: COLORS.secondary,
+                    ...styles.shadow
+                }}
+            >
+                <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Investing Safety</Text>
+                <Text style={{ marginTop:SIZES.base, color: COLORS.white, ...FONTS.body4, lineHeight: 18 }}>It's very difficult to time an investment, specially when the market is volatile. Learn how to use dollar cost averaging to your advantage</Text>
+                <TouchableOpacity
+                    style={{
+                        marginTop: SIZES.base
+                    }}
+                    onPress={() => console.log('Learn More')}
+                >
+                    <Text style={{ textDecorationLine: 'underline', color: COLORS.green, ...FONTS.h3 }}>Learn More</Text>
+                </TouchableOpacity>
+                
+            </View>
+        )
+    }
+
     return (
         <ScrollView>
             <View style={{ flex: 1, paddingBottom: 130 }}>
-                {renderHeader()}
+                { renderHeader() }
+                { renderAlert() }
+                { renderNotice() }
             </View>
         </ScrollView>
     )
