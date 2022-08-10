@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     StyleSheet,
     View,
@@ -7,16 +7,21 @@ import {
     ScrollView,
     FlatList,
     Image,
-    ImageBackground
+    ImageBackground,
+    LogBox
 } from 'react-native';
 
 import { dummyData, COLORS, SIZES, FONTS ,icons, images } from '../constants';
-import { PriceAlert } from '../components'
+import { PriceAlert, TransactionHistory } from '../components'
 
 const Home = ({ navigation }) => {
 
-    const [trending, setTrending] = React.useState(dummyData.trendingCurrencies);
+    const [trending, setTrending] = useState(dummyData.trendingCurrencies);
+    const [transactionHistory, setTransactionHistory] = useState(dummyData.transactionHistory);
 
+    useEffect(() => {
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    }, [])
 
     function renderHeader() {
 
@@ -170,12 +175,22 @@ const Home = ({ navigation }) => {
         )
     }
 
+    function renderTransactionHistory() {
+        return (
+            <TransactionHistory 
+                customContainerStyle={{ ...styles.shadow }}
+                history={transactionHistory}
+            />
+        )
+    }
+
     return (
         <ScrollView>
             <View style={{ flex: 1, paddingBottom: 130 }}>
                 { renderHeader() }
                 { renderAlert() }
                 { renderNotice() }
+                { renderTransactionHistory() }
             </View>
         </ScrollView>
     )
